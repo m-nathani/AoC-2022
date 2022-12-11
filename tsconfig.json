@@ -1,16 +1,17 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "commonjs",
-    "lib": ["es6"],
+    "module": "CommonJS",
+    "lib": ["ES2022"],
     "allowJs": true,
     "outDir": "build",
     "rootDir": "src",
+    "rootDirs": ["./", "src/"],
     "strict": true,
     "esModuleInterop": true,
     "types": ["node"],
     "skipLibCheck": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["src/**/*.spec.ts"]
+  "include": ["inputs/**/*", "src/**/*"],
+  "exclude": ["node_modules", "src/**/*.test.ts"]
 }

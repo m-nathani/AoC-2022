@@ -4,7 +4,8 @@
   "description": "solve problems in advent of code ",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node build/index.js",
+    "build": "tsc && node build/index.js",
+    "prebuild": "rm -rf build",
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
