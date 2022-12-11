@@ -57,15 +57,15 @@ const part2 = (data: string[]) => {
   return `Sum of top 3 Elfs calories is: ${topCalories[0] + topCalories[1] + topCalories[2]}`;
 };
 
-export default () => {
+export default (day: string) => {
   try {
-    const input: string = readFileFromDay(1);
+    const input: string = readFileFromDay(day);
     const data: string[] = input.split("\n");
     return {
       part1: part1(data),
       part2: part2(data),
     };
   } catch (error) {
-    console.error("Error on day-1 ", error);
+    console.error(`Error on day : ${day}`, error);
   }
 };
