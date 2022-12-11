@@ -26,8 +26,8 @@ const part1 = (data: string[]) => {
 };
 
 const part2 = (data: string[]) => {
-  let elfIndex = 0;
-  let elfCalories = 0;
+  let elfIndex: number = 0;
+  let elfCalories: number = 0;
   const topCalories: number[] = [0, 0, 0];
 
   data.forEach((calories: string) => {
