@@ -63,6 +63,6 @@ export default (day: string) => {
       part2: part2(data),
     };
   } catch (error) {
-    console.error(`Error on day : ${day}`, error);
+    console.error(`Error on day ${day}: `, error);
   }
 };
