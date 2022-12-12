@@ -5,7 +5,6 @@ const part1 = (data: string[]) => {
 
   data.forEach((pairs: string) => {
     const [firstPair, secondPair] = pairs.split(",");
-    console.log(firstPair, secondPair);
     const [firstStart, firstEnd] = firstPair.split("-");
     const [secondStart, secondEnd] = secondPair.split("-");
     // .123..       012345
@@ -26,7 +25,6 @@ const part2 = (data: string[]) => {
 
   data.forEach((pairs: string) => {
     const [firstPair, secondPair] = pairs.split(",");
-    console.log(firstPair, secondPair);
     const [firstStart, firstEnd] = firstPair.split("-");
     const [secondStart, secondEnd] = secondPair.split("-");
     // ..234....       ...34.

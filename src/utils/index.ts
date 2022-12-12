@@ -17,3 +17,8 @@ export const prompt = (question: string, callback: (input: string) => void) => {
     read.close();
   });
 };
+
+export function replaceAll(input: string, target: string, payload: string) {
+  const regex = new RegExp(target, "g");
+  return input.replace(regex, payload);
+}
