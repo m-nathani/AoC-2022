@@ -22,3 +22,19 @@ export function replaceAll(input: string, target: string, payload: string) {
   const regex = new RegExp(target, "g");
   return input.replace(regex, payload);
 }
+
+const getCircularReplacer = () => {
+  const seen = new WeakSet();
+  return (key: never, value: any) => {
+    if (typeof value === "object" && value !== null) {
+      if (seen.has(value)) {
+        return;
+      }
+      seen.add(value);
+    }
+    return value;
+  };
+};
+
+export const stringifyCircularJson = (circularReference: unknown) =>
+  JSON.stringify(circularReference, getCircularReplacer() as never);
