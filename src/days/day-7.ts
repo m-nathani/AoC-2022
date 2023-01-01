@@ -124,7 +124,7 @@ const processSizeOfDir = (directory: Tree): number => {
 
 const findDirectoriesWithinLimit = (directory: Tree, limit: number) => {
   if (!directory.children.length) {
-    if (directory.size < limit) {
+    if (directory.size <= limit) {
       return directory.size;
     } else {
       return 0;
@@ -133,13 +133,11 @@ const findDirectoriesWithinLimit = (directory: Tree, limit: number) => {
 
   let result = 0;
   directory.children.forEach((dir) => {
-    if (dir.size < limit) {
-      const size = findDirectoriesWithinLimit(dir, limit);
-      result += size;
-    }
+    const size = findDirectoriesWithinLimit(dir, limit);
+    result += size;
   });
 
-  if (directory.size < limit) {
+  if (directory.size <= limit) {
     result += directory.size;
   }
 
@@ -147,8 +145,6 @@ const findDirectoriesWithinLimit = (directory: Tree, limit: number) => {
 };
 
 const part1 = (data: string[]) => {
-  // let dirs: Tree[] = [];
-  // const sizeOfDir: { [key: string]: number } = {};
   const limit = 100000;
 
   data.forEach((line) => {
@@ -162,7 +158,7 @@ const part1 = (data: string[]) => {
   });
 
   processSizeOfDir(tree);
-  console.table(stringifyCircularJson(tree));
+  console.log(stringifyCircularJson(tree));
 
   return `Sum of dir of size less then ${limit} is: ${findDirectoriesWithinLimit(tree, limit)}`;
 };
