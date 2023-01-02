@@ -25,7 +25,7 @@ export function replaceAll(input: string, target: string, payload: string) {
 
 const getCircularReplacer = () => {
   const seen = new WeakSet();
-  return (key: never, value: any) => {
+  return (key: never, value: unknown) => {
     if (typeof value === "object" && value !== null) {
       if (seen.has(value)) {
         return;

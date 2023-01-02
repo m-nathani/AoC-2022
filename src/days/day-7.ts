@@ -1,4 +1,4 @@
-import { readFileFromDay, stringifyCircularJson } from "../utils/index";
+import { readFileFromDay } from "../utils/index";
 
 interface File {
   name: string;
@@ -22,7 +22,7 @@ const tree: Tree = {
 
 let currentNode: Tree = tree;
 
-const traverseTree = (arg: string) => {
+const changeDirectory = (arg: string) => {
   if ("/" === arg) {
     currentNode = tree;
     return;
@@ -65,7 +65,7 @@ const createTree = (command: string, arg: string) => {
 const parseCommand = (command: string, arg: string): void => {
   switch (command) {
     case "cd": {
-      traverseTree(arg);
+      changeDirectory(arg);
       break;
     }
     case "ls": {
@@ -122,7 +122,7 @@ const processSizeOfDir = (directory: Tree): number => {
   return parentSize;
 };
 
-const findDirectoriesWithinLimit = (directory: Tree, limit: number) => {
+const sumOfDirectoriesWithinLimit = (directory: Tree, limit: number) => {
   if (!directory.children.length) {
     if (directory.size <= limit) {
       return directory.size;
@@ -131,9 +131,9 @@ const findDirectoriesWithinLimit = (directory: Tree, limit: number) => {
     }
   }
 
-  let result = 0;
-  directory.children.forEach((dir) => {
-    const size = findDirectoriesWithinLimit(dir, limit);
+  let result: number = 0;
+  directory.children.forEach((dir: Tree) => {
+    const size = sumOfDirectoriesWithinLimit(dir, limit);
     result += size;
   });
 
@@ -144,36 +144,69 @@ const findDirectoriesWithinLimit = (directory: Tree, limit: number) => {
   return result;
 };
 
-const part1 = (data: string[]) => {
-  const limit = 100000;
-
-  data.forEach((line) => {
-    const commands = line.split(" ");
-    const iSCommand = "$" === commands[0];
-    if (iSCommand) {
-      parseCommand(commands[1], commands[2]);
-      return;
+const findDirectoryToFreeSpace = (directory: Tree, limit: number, size: number) => {
+  if (!directory.children.length) {
+    if (directory.size >= limit) {
+      return directory.size;
     }
-    createTree(commands[0], commands[1]);
+  }
+
+  directory.children.forEach((dir: Tree) => {
+    const currentSize = findDirectoryToFreeSpace(dir, limit, size);
+    if (currentSize < size) {
+      size = currentSize;
+    }
   });
 
-  processSizeOfDir(tree);
-  console.log(stringifyCircularJson(tree));
+  if (directory.size >= limit && directory.size < size) {
+    size = directory.size;
+  }
 
-  return `Sum of dir of size less then ${limit} is: ${findDirectoriesWithinLimit(tree, limit)}`;
+  return size;
 };
 
-const part2 = (data: string[]) => {
-  return `Crate top of each stack: `;
+const part1 = () => {
+  const limit = 100000;
+  return `Sum of directory whose size less then ${limit} is: ${sumOfDirectoriesWithinLimit(
+    tree,
+    limit
+  )}`;
+};
+
+const part2 = () => {
+  const totalSpace = 70000000;
+  const needFreeSpace = 30000000;
+  const freeSpace = totalSpace - tree.size;
+  const toFreeSpace = needFreeSpace - freeSpace;
+  let result = 0;
+
+  if (toFreeSpace > 0) {
+    result = findDirectoryToFreeSpace(tree, toFreeSpace, tree.size);
+  }
+
+  return `Size of smallest directory that free space up is: ${result}`;
 };
 
 export default (day: string) => {
   try {
     const input: string = readFileFromDay(day);
     const data: string[] = input.split("\n");
+
+    data.forEach((line) => {
+      const commands = line.split(" ");
+      const iSCommand = "$" === commands[0];
+      if (iSCommand) {
+        parseCommand(commands[1], commands[2]);
+        return;
+      }
+      createTree(commands[0], commands[1]);
+    });
+
+    processSizeOfDir(tree);
+
     return {
-      part1: part1(data),
-      part2: part2(data),
+      part1: part1(),
+      part2: part2(),
     };
   } catch (error) {
     console.error(`Error on day ${day}: `, error);
